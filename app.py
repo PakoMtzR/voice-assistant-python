@@ -1,7 +1,6 @@
 import pyttsx3
 import speech_recognition as sr
 import pywhatkit
-import yfinance as yf
 import pyjokes
 import webbrowser
 import datetime
@@ -42,8 +41,8 @@ wikipedia.set_lang("es")
 def transform_audio_into_text():
     with sr.Microphone() as source:
         print("Comienza a hablar...")
-        #recognizer.pause_threshold = 0.8
-        recognizer.adjust_for_ambient_noise(source)
+        recognizer.pause_threshold = 0.8
+        # recognizer.adjust_for_ambient_noise(source)
         audio = recognizer.listen(source)
     try:
         request = recognizer.recognize_google(audio, language="es-ES")
@@ -90,45 +89,55 @@ def run_assistant():
         print("[Tú]: " + my_request)
 
         if "abre youtube" in my_request:
-            message = "ok bastardo, abriendo youtube"
-            speak(message)
+            speak("ok bastardo, abriendo youtube")
             webbrowser.open("https://www.youtube.com")
             continue
+
         elif "abre el navegador" in my_request:
-            message = "abriendo el navegador"
-            speak(message)
+            speak("abriendo el navegador")
             webbrowser.open("https://google.com")
             continue
+
         elif "a qué estamos" in my_request:
-            message = ask_day()
-            speak(message)
+            speak(ask_day())
             continue
+
         elif "qué hora es" in my_request:
-            # message = ask_time()
             speak(ask_time())
             continue
-        elif "busca en wikipedia" in my_request:
-            my_request = my_request.replace("busca en wikipedia", "")
+
+        elif "investiga" in my_request:
+            my_request = my_request.replace("investiga", "")
             speak(f"De acuerdo con wikipedia: {wikipedia.summary(my_request, sentences=1)}")
             continue
-        elif "busca en internet" in my_request:
-            my_request = my_request.replace("busca en internet", "")
+
+        elif "busca" in my_request:
+            my_request = my_request.replace("busca", "")
             pywhatkit.search(my_request)
             speak("Esto fue lo que encontre")
             continue
+
         elif "chiste" in my_request:
             speak(pyjokes.get_joke("es"))
             continue
-        elif "pon" in my_request:
+
+        elif "reproduce" in my_request:
             pywhatkit.playonyt(my_request)
             speak("Reproduciendo")
             continue
+
+        elif "dile algo al john" in my_request:
+            speak("ese puto john solo dice mamadas, mejor que se aleje")
+            continue
+        
+        elif "dile algo al manolo" in my_request:
+            speak("que se caye ese pinche telescopio")
+            continue
+
+        elif "dile algo a la gordis" in my_request:
+            speak("kúaaaass,kúass,kúass,kúass, no le sabe")
+
         elif "adiós" in my_request:
             break
-        else:
-            pass
         
-        
-# speak("ese puto john solo dice mamadas, mejor que se aleje")
-# speak("no le sabes")
 run_assistant()
